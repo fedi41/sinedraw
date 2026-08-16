@@ -2,7 +2,7 @@ import math
 import numpy as np
 
 def build_path(
-        harmonics: list[list[float]],  # [freq, amp, phase]
+        harmonics,  # [freq, amp, phase]
         resolution: int,
         scale=1,
         origin=(0, 0)
