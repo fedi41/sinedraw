@@ -20,12 +20,14 @@ harmonics_spiral = [
 ]
 
 harmonics_star = [
-    [1, 0.60, 0],
-    [-3, 0.20, 0],
-    [5, 0.10, 0],
-    [6, 0.30, 0],
+    [  2,          300,   0],
+    [ -3,          150,   0]
 ]
 
+harmonics_lapse = [
+    [  1,         120,  0],
+    [ -2,          100,   0]
+]
 
 class HarmonicShape:
     def __init__(self, harmonics):
@@ -39,27 +41,38 @@ class HarmonicShape:
         idx = np.argsort(-self.harmonics[:, 1])
         return HarmonicShape(self.harmonics[idx[:n]])
 
-    def render(self, resolution=200, scale=1, origin=(0, 0)):
-        return build_path(self.harmonics, resolution, scale, origin)
+    def render(self, resolution=200, scale=1, origin=(0, 0), transform=lambda harmonics : harmonics):
+        return build_path(transform(self.harmonics), resolution, scale, origin)
+
+
 
 class RenderStyle:
     def __init__(self, color="#ffffff", width=2):
         self.color = color
         self.width = width
 
-class StyledShape:
-    def __init__(self, shape:HarmonicShape, style:RenderStyle):
+class Shape:
+    def __init__(self, shape:HarmonicShape, style:RenderStyle, transform = lambda harmonics : harmonics):
         self.shape = shape
         self.style = style
+        self.transform = transform
     def render(self, resolution=200, scale=1, origin=(0,0)):
-        return self.shape.render(resolution, scale, origin)
+        return self.shape.render(resolution, scale, origin, self.transform)
+
+class MorphShape(Shape):
+    def __init__(self, shapeA:HarmonicShape, shapeB:HarmonicShape, style:RenderStyle, transform = lambda harmonics : harmonics):
+        self.shapeA = shapeA
+        self.shapeB = shapeB
+
+        super().__init__(shapeA, style, transform)
+
 
 class HarmonicSprite:
     def __init__(self):
-        self.shapes:list[StyledShape] = []
+        self.shapes:list[Shape] = []
 
     def add(self, shape: HarmonicShape, style: RenderStyle = RenderStyle()):
-        self.shapes.append(StyledShape(shape, style))
+        self.shapes.append(Shape(shape, style))
         return self
 
     def render(self, resolution=200, scale=1, origin=(0, 0)):

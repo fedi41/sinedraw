@@ -1,7 +1,7 @@
 import pygame
 
-from core.harmonics import harmonics_star, HarmonicSprite, HarmonicShape, RenderStyle
-from renderer.pygame_renderer.renderer import PygameRenderer
+from core.harmonics import harmonics_star, HarmonicSprite, HarmonicShape, RenderStyle, harmonics_lapse
+from renderer.pygame_renderer import PygameRenderer
 
 SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
 
@@ -9,15 +9,15 @@ SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
 class MainWindow:
     def __init__(self):
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        pygame.display.set_caption("sinedraw editor")
+        pygame.display.set_caption("sinedraw")
 
         self.origin = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
         self.running = True
         self.renderer = PygameRenderer(self.screen)
         self.t = 0
 
-        self.raw_points = []
-        self.preview_sprite =
+        self.test_sprite = HarmonicSprite()
+        self.test_sprite.add(HarmonicShape(harmonics_lapse), RenderStyle("red", 2))
 
 
 
@@ -35,27 +35,23 @@ class MainWindow:
 
     def update(self):
 
-        if pygame.mouse.get_pressed(3)[0]:
-            self.raw_points.append(pygame.mouse.get_pos())
 
         self.t += 0.001
 
-
+        # self.test_sprite.shapes[0].shape.top_n(round(self.t))
 
 
     def render(self):
         self.screen.fill("#0F1A20")
 
         # print(self.test_sprite.render(200, 100,self.origin))
-        self.renderer.draw(self.test_sprite, 100, 200,self.origin)
+        self.renderer.draw(self.test_sprite, 100, 1,self.origin)
 
         pygame.draw.circle(self.screen, "green", self.origin, 1)
 
 
 
 
-
-window = MainWindow()
-window.run()
-
-
+if __name__ == '__main__':
+    window = MainWindow()
+    window.run()

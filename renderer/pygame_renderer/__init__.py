@@ -1,60 +1,27 @@
 import pygame
 
-from core.harmonics import harmonics_star, HarmonicSprite, HarmonicShape, RenderStyle
-from renderer.pygame_renderer.renderer import PygameRenderer
-
-SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
+from core.harmonics import HarmonicSprite
 
 
-class MainWindow:
-    def __init__(self):
-        self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        pygame.display.set_caption("sinedraw")
+class PygameRenderer:
+    def __init__(self, surface):
+        self.surface = surface
 
-        self.origin = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
-        self.running = True
-        self.renderer = PygameRenderer(self.screen)
-        self.t = 0
+    def draw(self, sprite:HarmonicSprite, resolution=200, scale=1, origin=(400, 300)):
+        for points, style in sprite.render(resolution=resolution, scale=scale, origin=origin):
+            color = pygame.Color(style.color)
+            point_list = [(float(x), float(y)) for x, y in points]
 
-        self.test_sprite = HarmonicSprite()
-        self.test_sprite.add(HarmonicShape(harmonics_star), RenderStyle("red", 5))
+            self.draw_lines(color, point_list, style.width)
+            # self.draw_points(color, point_list, style.width)
 
+    def draw_lines(self, color, points, width):
+        if len(points) >= 2:
+            pygame.draw.lines(self.surface, color, True, points, width)
 
-
-    def run(self):
-
-        while self.running:
-            for e in pygame.event.get():
-                if e.type == pygame.QUIT:
-                    self.running = False
-
-            self.update()
-            self.render()
-
-            pygame.display.flip()
-
-    def update(self):
-
-
-        self.t += 0.001
-
-        self.test_sprite.shapes[0].shape.top_n(round(self.t))
-
-
-    def render(self):
-        self.screen.fill("#0F1A20")
-
-        # print(self.test_sprite.render(200, 100,self.origin))
-        self.renderer.draw(self.test_sprite, 100, 200,self.origin)
-
-        pygame.draw.circle(self.screen, "green", self.origin, 1)
-
-
-
-
-
-window = MainWindow()
-window.run()
+    def draw_points(self, color, points, radius):
+        for p in points:
+            pygame.draw.circle(self.surface, color, p, radius)
 
 
 
