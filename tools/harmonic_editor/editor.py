@@ -1,8 +1,8 @@
 import numpy as np
 import pygame
 
-from core.harmonics import harmonics_star, HarmonicSprite, HarmonicShape, RenderStyle
-from renderer.pygame_renderer import PygameRenderer
+from core.renderer.pygame_renderer import PygameRenderer
+from core.shapes import HarmonicShape, ShapeGroup
 from tools.harmonic_editor.preview import PreviewSprite
 
 SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
@@ -19,7 +19,9 @@ class MainWindow:
         self.t = 0
 
         self.raw_points = []
-        self.preview_sprite = PreviewSprite()
+        self.shape_group = ShapeGroup()
+        self.shape_group.add(HarmonicShape())
+
 
         self.mouse_was_pressed = False
 
@@ -41,13 +43,13 @@ class MainWindow:
 
         if pygame.mouse.get_pressed(3)[0]:
             if not self.mouse_was_pressed:
-                print(self.preview_sprite.shapes[-1].shape.harmonics)
-                self.preview_sprite.new_shape()
+                print([[float(j) for j in i] for i in self.shape_group.shapes[-1].harmonics])
+                self.shape_group.add(HarmonicShape())
                 self.raw_points = []
             self.mouse_was_pressed = True
 
             self.raw_points.append((pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]))
-            self.preview_sprite.modify_last_shape(np.array(self.raw_points)-self.origin, 15)
+            self.shape_group.shapes[-1] = HarmonicShape.from_points(np.array(self.raw_points)).top_n(15)
             # print(self.preview_sprite.shapes.harmonics)
         else:
             self.mouse_was_pressed = False
@@ -56,7 +58,7 @@ class MainWindow:
         self.screen.fill("#0F1A20")
 
         # print(self.test_sprite.render(200, 100,self.origin))
-        self.renderer.draw(self.preview_sprite, 100, 1,self.origin)
+        self.renderer.renderShape(self.shape_group)
 
         self.renderer.draw_lines("yellow", np.array(self.raw_points), 1)
 

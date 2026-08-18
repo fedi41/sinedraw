@@ -1,7 +1,8 @@
 import pygame
 
-from core.harmonics import harmonics_star, HarmonicSprite, HarmonicShape, RenderStyle, harmonics_lapse
-from renderer.pygame_renderer import PygameRenderer
+from core.shapes import HarmonicShape, RenderStyle, MorphShape, StyledShape
+from harmonics import *
+from core.renderer.pygame_renderer import PygameRenderer
 
 SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
 
@@ -16,8 +17,14 @@ class MainWindow:
         self.renderer = PygameRenderer(self.screen)
         self.t = 0
 
-        self.test_sprite = HarmonicSprite()
-        self.test_sprite.add(HarmonicShape(harmonics_lapse), RenderStyle("red", 2))
+
+        self.shape = StyledShape(MorphShape(
+            harmonics_star, harmonics_8_scaled
+        ),
+            RenderStyle(offset=self.origin, scale=100)
+        )
+
+        self.shape.shape.set_progress(0)
 
 
 
@@ -36,7 +43,10 @@ class MainWindow:
     def update(self):
 
 
-        self.t += 0.001
+        self.t += 0.0005
+        if self.t > 1: self.t = 1
+        self.shape.shape.set_progress(self.t)
+
 
         # self.test_sprite.shapes[0].shape.top_n(round(self.t))
 
@@ -45,8 +55,7 @@ class MainWindow:
         self.screen.fill("#0F1A20")
 
         # print(self.test_sprite.render(200, 100,self.origin))
-        self.renderer.draw(self.test_sprite, 100, 1,self.origin)
-
+        self.renderer.renderShape(self.shape)
         pygame.draw.circle(self.screen, "green", self.origin, 1)
 
 

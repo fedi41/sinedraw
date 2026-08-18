@@ -1,11 +1,11 @@
 import math
 import numpy as np
 
-def build_path(
+def build_path_slow(
         harmonics,  # [freq, amp, phase]
         resolution: int,
         scale=1,
-        origin=(0, 0)
+        offset=(0, 0)
 ):
     path = []
     step = 1 / resolution
@@ -17,12 +17,12 @@ def build_path(
             angle = 2 * math.pi * freq * t + phase
             x += amp * math.cos(angle)
             y += amp * math.sin(angle)
-        path.append((origin[0] + x * scale, origin[1] + y * scale))
+        path.append((offset[0] + x * scale, offset[1] + y * scale))
         t += step
 
     return path
 
-def build_path_np(harmonics, resolution: int, scale=1, origin=(0, 0)):
+def build_path(harmonics, resolution: int, scale=1, offset=(0, 0)):
     harmonics = np.array(harmonics)  # shape: (n_harmonics, 3) -> freq, amp, phase
     freq, amp, phase = harmonics[:, 0], harmonics[:, 1], harmonics[:, 2]
 
@@ -33,7 +33,7 @@ def build_path_np(harmonics, resolution: int, scale=1, origin=(0, 0)):
     x = np.sum(amp[:, None] * np.cos(angles), axis=0)
     y = np.sum(amp[:, None] * np.sin(angles), axis=0)
 
-    x = origin[0] + x * scale
-    y = origin[1] + y * scale
+    x = offset[0] + x * scale
+    y = offset[1] + y * scale
 
     return np.stack([x, y], axis=1)

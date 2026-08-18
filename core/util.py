@@ -5,6 +5,25 @@ import numpy.random
 import random
 
 
+#
+def points_to_harmonics(points):
+    points = np.array(points)
+    x,y = points[:,0],points[:,1]
+
+    z = x + 1j * y # complex
+
+    n = len(z)
+    coeffs = np.fft.fft(z)/n
+
+    freqs = np.fft.fftfreq(n, d=1/n)
+
+    amp = np.abs(coeffs)
+    phase = np.angle(coeffs)
+
+    harmonics = np.stack([freqs, amp, phase], axis=1)
+    return harmonics
+
+
 def random_shift(harmonics, t):
     shift = numpy.zeros((len(harmonics), 3))
     shift[:, 1] = math.sin(t)/1000
@@ -19,6 +38,9 @@ def random_harmonics(n=10, max_amp=50):
     ]
 
 def align_harmonics(h1, h2):
+    h1 = np.array(h1)
+    h2 = np.array(h2)
+
     freqs1 = set(h1[:, 0])
     freqs2 = set(h2[:, 0])
     all_freqs = sorted(freqs1 | freqs2)
@@ -35,9 +57,13 @@ def align_harmonics(h1, h2):
 
     return build_full(h1, all_freqs), build_full(h2, all_freqs)
 
+def shortest_angle_diff(a, b):
+    diff = (b - a + np.pi) % (2 * np.pi) - np.pi
+    return diff
+
 def lerp_harmonics(h1, h2, progress):
-    # amp und phase linear interpolieren, freq bleibt gleich (ist ja jetzt identisch)
     freq = h1[:, 0]
     amp = h1[:, 1] * (1 - progress) + h2[:, 1] * progress
-    phase = h1[:, 2] * (1 - progress) + h2[:, 2] * progress
+    phase_diff = shortest_angle_diff(h1[:, 2], h2[:, 2])
+    phase = h1[:, 2] + phase_diff * progress
     return np.stack([freq, amp, phase], axis=1)

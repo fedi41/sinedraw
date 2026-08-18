@@ -1,8 +1,8 @@
-import core.harmonics
-from core.harmonics import HarmonicSprite, HarmonicShape, Shape, RenderStyle
+from core.shapes import RenderStyle, HarmonicShape
+from core.sprite import Sprite
 
 
-class PreviewSprite(HarmonicSprite):
+class PreviewSprite(Sprite):
     def __init__(self):
         super().__init__()
 
@@ -10,12 +10,12 @@ class PreviewSprite(HarmonicSprite):
         self.render_style = RenderStyle("white", 2)
 
         self.shapes = [
-            Shape(HarmonicShape([]), self.render_style)
+            HarmonicShape([])
         ]
 
     def modify_last_shape(self, points, max_freq_count=20):
-        self.shapes[-1] = Shape(HarmonicShape.from_points(points).top_n(max_freq_count), self.render_style)
+        self.shapes[-1] = HarmonicShape.from_points(points).top_n(max_freq_count)
 
 
     def new_shape(self):
-        self.shapes.append(Shape(HarmonicShape([]), self.render_style))
+        self.shapes.append(HarmonicShape([]))
