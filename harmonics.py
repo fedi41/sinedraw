@@ -1,6 +1,6 @@
 import numpy as np
 
-from core.util import scale_harmonics, top_n_harmonics
+from sinengine.util import scale_harmonics, top_n_harmonics
 
 harmonics_square = [
     [-15, 0.0044, 0],

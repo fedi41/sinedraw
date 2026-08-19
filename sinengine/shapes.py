@@ -1,8 +1,8 @@
 import numpy as np
 
 
-from core.path_builder import build_path
-from core.util import align_harmonics, lerp_harmonics, points_to_harmonics
+from sinengine.path_builder import build_path
+from sinengine.util import align_harmonics, lerp_harmonics, points_to_harmonics
 
 
 

@@ -1,9 +1,9 @@
 import pygame
 
-from core.shapes import HarmonicShape, ShapeStyle, MorphShape, StyledShape
-from core.util import load_harmonics
+from sinengine.shapes import HarmonicShape, ShapeStyle, MorphShape, StyledShape
+from sinengine.util import load_harmonics
 from harmonics import *
-from core.renderer.pygame_renderer import PygameRenderer
+from sinengine.renderer.pygame_renderer import PygameRenderer
 
 SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
 

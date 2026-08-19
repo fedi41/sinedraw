@@ -1,4 +1,4 @@
-from core.shapes import Shape, ShapeStyle
+from sinengine.shapes import Shape, ShapeStyle
 
 
 class Sprite:

@@ -1,4 +1,4 @@
-from core.shapes import Shape, PathShape, ShapeStyle, StyledShape, ShapeGroup
+from sinengine.shapes import Shape, PathShape, ShapeStyle, StyledShape, ShapeGroup
 
 
 class Renderer:

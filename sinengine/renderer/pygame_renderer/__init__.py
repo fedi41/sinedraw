@@ -1,8 +1,8 @@
 import pygame
 
-from core.renderer import Renderer
-from core.shapes import PathShape, ShapeStyle
-from core.sprite import Sprite
+from sinengine.renderer import Renderer
+from sinengine.shapes import PathShape, ShapeStyle
+from sinengine.sprite import Sprite
 
 
 class PygameRenderer(Renderer):
