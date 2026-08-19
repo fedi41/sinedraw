@@ -1,3 +1,4 @@
+import json
 import math
 
 import numpy as np
@@ -67,3 +68,16 @@ def lerp_harmonics(h1, h2, progress):
     phase_diff = shortest_angle_diff(h1[:, 2], h2[:, 2])
     phase = h1[:, 2] + phase_diff * progress
     return np.stack([freq, amp, phase], axis=1)
+
+def scale_harmonics(harmonics, scale):
+    harmonics = np.array(harmonics)
+    harmonics[:, 1] *= scale
+    return harmonics
+
+def top_n_harmonics(harmonics, n):
+    idx = np.argsort(-harmonics[:, 1])
+    return harmonics[idx[:n]]
+
+def load_harmonics(path):
+    with open(path, "r") as file:
+       return json.loads(file.read())

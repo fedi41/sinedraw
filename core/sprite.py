@@ -1,4 +1,4 @@
-from core.shapes import Shape, RenderStyle
+from core.shapes import Shape, ShapeStyle
 
 
 class Sprite:

@@ -1,6 +1,7 @@
 import pygame
 
-from core.shapes import HarmonicShape, RenderStyle, MorphShape, StyledShape
+from core.shapes import HarmonicShape, ShapeStyle, MorphShape, StyledShape
+from core.util import load_harmonics
 from harmonics import *
 from core.renderer.pygame_renderer import PygameRenderer
 
@@ -17,11 +18,12 @@ class MainWindow:
         self.renderer = PygameRenderer(self.screen)
         self.t = 0
 
+        self.harmonics = load_harmonics("harmonics.json")
 
         self.shape = StyledShape(MorphShape(
-            harmonics_star, harmonics_8_scaled
+            self.harmonics["square"], self.harmonics["star"]
         ),
-            RenderStyle(offset=self.origin, scale=100)
+            ShapeStyle(offset=self.origin, scale=100)
         )
 
         self.shape.shape.set_progress(0)
@@ -54,7 +56,6 @@ class MainWindow:
     def render(self):
         self.screen.fill("#0F1A20")
 
-        # print(self.test_sprite.render(200, 100,self.origin))
         self.renderer.renderShape(self.shape)
         pygame.draw.circle(self.screen, "green", self.origin, 1)
 

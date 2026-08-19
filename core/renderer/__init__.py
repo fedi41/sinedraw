@@ -1,8 +1,8 @@
-from core.shapes import Shape, PathShape, RenderStyle, StyledShape, ShapeGroup
+from core.shapes import Shape, PathShape, ShapeStyle, StyledShape, ShapeGroup
 
 
 class Renderer:
-    def renderShape(self, shape:Shape, style=RenderStyle()):
+    def renderShape(self, shape:Shape, style=ShapeStyle()):
         if isinstance(shape, PathShape):
             self.renderPathShape(shape, style)
         elif isinstance(shape, StyledShape):
@@ -11,5 +11,5 @@ class Renderer:
             for s in shape.shapes:
                 self.renderShape(s, style)
 
-    def renderPathShape(self, shape:PathShape, style=RenderStyle()):
+    def renderPathShape(self, shape:PathShape, style=ShapeStyle()):
         raise NotImplementedError

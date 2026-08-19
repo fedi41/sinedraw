@@ -8,7 +8,7 @@ from core.util import align_harmonics, lerp_harmonics, points_to_harmonics
 
 # ---------- styles
 
-class RenderStyle:
+class ShapeStyle:
     def __init__(self, color="#ffffff", width=2, resolution=200, scale=1, offset=(0,0), transform=lambda harmonics : harmonics):
         self.color = color
         self.width = width
@@ -65,7 +65,7 @@ class ShapeGroup(Shape):
     def add(self, shape:Shape):
         self.shapes.append(shape)
 class StyledShape(Shape):
-    def __init__(self, shape=Shape(), style=RenderStyle()):
+    def __init__(self, shape=Shape(), style=ShapeStyle()):
         self.shape = shape
         self.style = style
 

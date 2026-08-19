@@ -2,8 +2,7 @@ import numpy as np
 import pygame
 
 from core.renderer.pygame_renderer import PygameRenderer
-from core.shapes import HarmonicShape, ShapeGroup
-from tools.harmonic_editor.preview import PreviewSprite
+from core.shapes import HarmonicShape, ShapeGroup, StyledShape, ShapeStyle
 
 SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_SIZE = (1500, 900)
 
@@ -20,12 +19,10 @@ class MainWindow:
 
         self.raw_points = []
         self.shape_group = ShapeGroup()
+        self.root_shape = StyledShape(self.shape_group, ShapeStyle(color="red", width=4, resolution=150))
         self.shape_group.add(HarmonicShape())
 
-
         self.mouse_was_pressed = False
-
-
 
     def run(self):
 
@@ -57,8 +54,7 @@ class MainWindow:
     def render(self):
         self.screen.fill("#0F1A20")
 
-        # print(self.test_sprite.render(200, 100,self.origin))
-        self.renderer.renderShape(self.shape_group)
+        self.renderer.renderShape(self.root_shape)
 
         self.renderer.draw_lines("yellow", np.array(self.raw_points), 1)
 
