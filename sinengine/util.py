@@ -78,6 +78,11 @@ def top_n_harmonics(harmonics, n):
     idx = np.argsort(-harmonics[:, 1])
     return harmonics[idx[:n]]
 
-def load_harmonics(path):
-    with open(path, "r") as file:
-       return json.loads(file.read())
+def remove_offset(harmonics):
+    harmonics[0] = [0,0,0]
+    return harmonics
+
+def move_harmonics(harmonics, vector):
+    harmonics = np.array(harmonics)
+    harmonics[:] += vector
+    return harmonics

@@ -1,7 +1,8 @@
 import pygame
 
+from sinengine.util import *
 from sinengine.shapes import HarmonicShape, ShapeStyle, MorphShape, StyledShape
-from sinengine.util import load_harmonics
+from util import load_harmonics
 from harmonics import *
 from sinengine.renderer.pygame_renderer import PygameRenderer
 
@@ -21,9 +22,9 @@ class MainWindow:
         self.harmonics = load_harmonics("harmonics.json")
 
         self.shape = StyledShape(MorphShape(
-            self.harmonics["square"], self.harmonics["star"]
+            scale_harmonics(self.harmonics["square"], 100), self.harmonics["bruh"]
         ),
-            ShapeStyle(offset=self.origin, scale=100)
+            ShapeStyle(offset=self.origin, scale=1)
         )
 
         self.shape.shape.set_progress(0)
